@@ -1,26 +1,26 @@
 #include "Mouse.h"
 //#include "Keyboard.h"
 
-bool isPressed = false; //初始化未按下鼠标健
+bool isPressed = false; //初始化未按下鼠标左键
 void setup() {
   pinMode(2, INPUT_PULLUP); //D2为读模式
   Mouse.begin(); //开始模拟鼠标
-//  Keyboard.begin();
+  //Keyboard.begin();
 }
 
 void loop() {
   Mouse.move(readAxis(A0), readAxis(A1), 0); //读出XY轴，并移动
 
-  if (digitalRead(2) == LOW){
-    if (!isPressed) {
+  if (digitalRead(2) == LOW){ //发现按钮按下了
+    if (!isPressed) { //如果还没模拟过左键按下
       Mouse.press(); //模拟鼠标左键按下
-      isPressed = true; //按下状态
-//      Keyboard.print("pressing!\n");
+      isPressed = true; //模拟状态为按下状态
+      //Keyboard.print("pressing!\n"); //调试用
     }
-  } else if(isPressed) {
-    Mouse.release(); //如果已经按下过，放开   
-    isPressed = false; //放开状态
-//    Keyboard.print("released!\n");
+  } else if(isPressed) { //按钮放开了，并且在模拟状态
+    Mouse.release(); //模拟鼠标抬起   
+    isPressed = false; //模拟状态为非按下状态
+    //Keyboard.print("released!\n"); //调试用
   }
 
   delay(10); //延时10毫秒
