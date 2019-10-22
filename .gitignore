@@ -1,2 +1,34 @@
-# Google App Engine generated folder
-appengine-generated/
+### Mac
+~*
+.DS_Store
+*xcuserdata
+*.gcno
+
+### Windows
+*.bak
+thumb.db
+
+### npm
+npm-debug.log
+node_modules
+
+### JetBrains
+.idea
+.idea_modules
+/out/
+
+### Visual Studio
+.project
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### common
+.history
+coverage
+build_report.log
+server.crt
+server.key
+server.csr
