@@ -1,6 +1,6 @@
-# practice
+# 实验项目列表
 
-|路径|内容|
+|项目|简介|
 |--|--|
 |[ArduinoJoystick](ArduinoJoystick)|Arduino pro micro使用Joystick模拟鼠标|
 |[ArduinoKeyboard](ArduinoKeyboard)|Arduino pro micro自定义键盘|
