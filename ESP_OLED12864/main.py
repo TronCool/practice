@@ -8,13 +8,13 @@ buff = ssd1306.SSD1306_I2C(128, 64, i2c)
 buff.text("QRCode Xiaole", 0, 2)
 buff.text("-------------", 0, 10)
 
-buff.fill_rect(0, 16, 128, 48, 1)
+buff.fill_rect(0, 16, 48, 48, 1)
 
-# x0, y0  = 0, 40
-# for x in range(128):
-#     y = int(math.sin(x/3.14) * 22 + 40)
-#     buff.line(x0, y0, x, y, 1)
-#     x0, y0 = x, y
+x0, y0  = 48, 40
+for x in range(80):
+    y = int(math.sin(x / 20 * 3.14) * 22 + 40)
+    buff.line(x0, y0, x + 48, y, 1)
+    x0, y0 = x + 48, y
 
 qr = [
 '000000010001110000000',
@@ -42,7 +42,7 @@ qr = [
 
 for x in range(21): 
   for y in range(21):
-    buff.fill_rect(43 + x * 2, 19 + y * 2, 2, 2, int(qr[y][x]))
+    buff.fill_rect(3 + x * 2, 19 + y * 2, 2, 2, int(qr[y][x]))
 
 buff.show()
 
