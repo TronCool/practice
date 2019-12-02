@@ -38,10 +38,11 @@ def initSSD1306():
 
 
 @micropython.native
-def drawBitmap(data, offsetX=0, offsetY=0):
+def drawBitmap(data, offsetX=0, offsetY=0, show=False):
     for y, i in enumerate(data):
         for x, c in enumerate(bin(i)[3:]):
             buff.pixel(x + offsetX, y + offsetY, int(c))
+    show and buff.show()  # 如果传入True则刷新显示器
 
 
 buff = initSSD1306()
@@ -49,13 +50,10 @@ buff.text("Tron Cool Robot", 3, 2)
 buff.text("---------------", 3, 10)
 buff.fill_rect(0, 16, 128, 48, 1)
 drawBitmap(robot, 10, 20)  # 机器人尺寸62 x 39
-drawBitmap(qr, 83, 19)  # 二维码尺寸42 x 42
-buff.show()
+drawBitmap(qr, 83, 19, True)  # 二维码尺寸42 x 42
 
 while True:
     time.sleep(random.getrandbits(5)/10)  # 随机延时 0-3.2秒
     # 眨一次眼，眼睛偏移机器人13 x 11
-    drawBitmap(eyeClose, 23, 31)
-    buff.show()
-    drawBitmap(eyeOpen, 23, 31)
-    buff.show()
+    drawBitmap(eyeClose, 23, 31, True)
+    drawBitmap(eyeOpen, 23, 31, True)
