@@ -4,7 +4,7 @@ import re
 # font.png是用抓图软件抓的，文泉驿点阵字体，9pt大小是11x11, 每行一个字，截成16宽，非常高的图片
 # 使用window记事本的话，行间距是5px
 img = Image.open('font.png').convert('1')
-imgData = ['0' if i == 0 else '1' for i in list(img.getdata())]
+imgData = ['1' if i == 0 else '0' for i in list(img.getdata())] # 黑色在led上要高亮，所以黑色是0换成"1"
 binData = re.findall('('+'.'*16+')', ''.join(imgData))  # 每16个点
 binData = [i[0:11] for i in binData].reverse()
 fontData = []
