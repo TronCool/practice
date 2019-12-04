@@ -11,6 +11,6 @@ void setup() {
 
 void loop() {
   digitalWrite(LED_BUILTIN, counter++ % 2 ? HIGH : LOW);
-  Serial.print(String(count) + "\n");
+  Serial.print(String(counter) + "\n");
   delay(1000);
 }
