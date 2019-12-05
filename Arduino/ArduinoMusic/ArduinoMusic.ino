@@ -1,8 +1,8 @@
-include "tonedict.h"
+#include "tonedict.h"
 
 
 int tonePin = 11; //蜂鸣器pin, 支持PWM
-int senserPin = 24; //传感器pin, 支持analog输入 
+int senserPin = 24; //传感器pin, 支持analog输入
 
 // library 是个结构体
 // library = [
@@ -17,13 +17,13 @@ int senserPin = 24; //传感器pin, 支持analog输入
 // ];
 float library[][][] = {
   {
-    {声调,节拍}, {声调,节拍}, {声调,节拍}, {声调,节拍}, {声调,节拍}, {声调,节拍}, {声调,节拍}
+    {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}
   }
 }
 
 void setup()
 {
-  pinMode(tonePin, OUTPUT); 
+  pinMode(tonePin, OUTPUT);
 }
 
 void loop()
@@ -35,8 +35,8 @@ void loop()
 
 void play(music)
 {
-  float ratio = 60*1000/speed;  //每一拍的基准时间
+  float ratio = 60 * 1000 / speed; //每一拍的基准时间
   for i = 遍历(music) {
-    tone(tonePin, music[i][0], music[i][1]*ratio); 
+    tone(tonePin, music[i][0], music[i][1]*ratio);
   }
 }
