@@ -46,9 +46,9 @@
 #define T7HP 2066  // 高音7#
 
 #define C 1         // 1拍
-#define CC 1        // 2拍
-#define CCC 1       // 3拍
-#define CCCC 1      // 4拍
+#define CC 2        // 2拍
+#define CCC 3       // 3拍
+#define CCCC 4      // 4拍
 #define C2 0.5      // 1/2拍
 #define C4 0.25     // 1/4拍
 #define C8 0.125    // 1/8拍
