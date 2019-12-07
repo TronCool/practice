@@ -1,57 +1,51 @@
 #ifndef TONE_DEFINE
 #define TONE_DEFINE
-//定义频率表
-#define STOP 0     // 休止符
-#define T1L 262    // 低音1
-#define T2L 294    // 低音2
-#define T3L 330    // 低音3
-#define T4L 349    // 低音4
-#define T5L 392    // 低音5
-#define T6L 440    // 低音6
-#define T7L 494    // 低音7
-#define T1 523     // 中音1
-#define T2 578     // 中音2
-#define T3 659     // 中音3
-#define T4 698     // 中音4
-#define T5 784     // 中音5
-#define T6 880     // 中音6
-#define T7 988     // 中音7
-#define T1H 1046   // 高音1
-#define T2H 1175   // 高音2
-#define T3H 1318   // 高音3
-#define T4H 1397   // 高音4
-#define T5H 1568   // 高音5
-#define T6H 1760   // 高音6
-#define T7H 1976   // 高音7
-#define T1LP 277   // 低音1#
-#define T2LP 311   // 低音2#
-#define T3LP 340   // 低音3#
-#define T4LP 370   // 低音4#
-#define T5LP 415   // 低音5#
-#define T6LP 466   // 低音6#
-#define T7LP 524   // 低音7#
-#define T1P 554    // 中音1#
-#define T2P 622    // 中音2#
-#define T3P 682    // 中音3#
-#define T4P 740    // 中音4#
-#define T5P 831    // 中音5#
-#define T6P 932    // 中音6#
-#define T7P 1046   // 中音7#
-#define T1HP 1109  // 高音1#
-#define T2HP 1245  // 高音2#
-#define T3HP 1356  // 高音3#
-#define T4HP 1480  // 高音4#
-#define T5HP 1661  // 高音5#
-#define T6HP 1865  // 高音6#
-#define T7HP 2066  // 高音7#
 
-#define C 1         // 1拍
-#define CC 2        // 2拍
-#define CCC 3       // 3拍
-#define CCCC 4      // 4拍
-#define C2 0.5      // 1/2拍
-#define C4 0.25     // 1/4拍
-#define C8 0.125    // 1/8拍
-#define C16 0.0625  // 1/16拍
+int melody(char s) {  // 频率
+    if (s == 'w') { return  349; }   // 低音4#
+    else if (s == 'x') { return  392; }   // 低音5#
+    else if (s == 'y') { return  440; }   // 低音6#
+    else if (s == 'z') { return  494; }   // 低音7#
+    else if (s == '1') { return  523; }   // 中音1#
+    else if (s == '2') { return  578; }   // 中音2#
+    else if (s == '3') { return  659; }   // 中音3#
+    else if (s == '4') { return  698; }   // 中音4#
+    else if (s == '5') { return  784; }   // 中音5#
+    else if (s == '6') { return  880; }   // 中音6# 
+    else if (s == '7') { return  988; }   // 中音7#
+    else if (s == 'a') { return  1046; }  // 高音1#
+    else if (s == 'b') { return  1175; }  // 高音2#
+    else if (s == 'c') { return  1318; }  // 高音3#
+    else { return  0; }
+}
+
+int port(char s) { // 点亮LED的端口
+    if (s == 'x') { return  1; }   // 低音5#
+    else if (s == 'y') { return  2; }   // 低音6#
+    else if (s == 'z') { return  3; }   // 低音7#
+    else if (s == '1') { return  4; }   // 中音1#
+    else if (s == '2') { return  5; }   // 中音2#
+    else if (s == '3') { return  6; }   // 中音3#
+    else if (s == '4') { return  7; }   // 中音4#
+    else if (s == '5') { return  8; }   // 中音5#
+    else if (s == '6') { return  9; }   // 中音6#
+    else if (s == '7') { return  10; }  // 中音7#
+    else if (s == 'a') { return  11; }  // 高音1#
+    else if (s == 'b') { return  12; }  // 高音2#
+    else { return  0; }
+}
+
+int duration(char s, int speed) {  // 算出节拍时长
+    float unit = 60000 / speed;
+    if (s == 'x') { return  int(unit * 4); }   // 4拍
+    else if (s == 'y') { return  int(unit * 3); }   // 3拍
+    else if (s == 'z') { return  int(unit * 2); }   // 2拍
+    else if (s == '1') { return  int(unit * 1); }   // 1拍
+    else if (s == '2') { return  int(unit / 2); }   // 1/2拍
+    else if (s == '3') { return  int(unit / 4); }   // 1/4拍
+    else if (s == '4') { return  int(unit / 8); }   // 1/8拍
+    else { return  0; }
+}
+
 
 #endif

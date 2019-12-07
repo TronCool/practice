@@ -1,43 +1,27 @@
 #include "tonedict.h"
 
+int tonePin = A0;
 
-int tonePin = 11; // 蜂鸣器pin, 支持PWM
-int senserPin = 24; // 传感器pin, 支持analog输入
+//乒乓变奏曲
+String aa = "331122x 1x13212 331122x 1x13231";
+String bb = "2222221 2222221 2222221 2222221";
 
-// library 是个结构体
-// library = [
-//   { // music 1
-//     speed: 120,
-//     tones: [[声调,节拍],[声调,节拍],[声调,节拍],[声调,节拍],[声调,节拍],[声调,节拍]]
-//   },
-//   { // music 2
-//     speed: 120,
-//     tones: [[声调,节拍],[声调,节拍],[声调,节拍],[声调,节拍],[声调,节拍],[声调,节拍]]
-//   }
-// ];
-float library[][][] = {
-  {
-    {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}, {声调, 节拍}
-  }
-}
-
-void setup()
-{
+void setup() {
   pinMode(tonePin, OUTPUT);
-  pinMode(senserPin, INTPUT);
+  Serial.begin(9600);
 }
 
-void loop()
-{
-  if (analogRead(senserPin)>700) { // 等待传感器事件
-    play(libiary[随机数]);
-  }
+void loop() {
+  play(aa, bb, 120);
+  noTone(tonePin);
+  delay(5000);
 }
 
-void play(music)
-{
-  float ratio = 60 * 1000 / speed; // 每一拍的基准时间
-  for i = 遍历(music) {
-    tone(tonePin, music[i][0], music[i][1]*ratio);
+void play(String song, String pace, int speed) {
+  for (int i = 0; i < song.length(); i++) {
+    tone(tonePin, melody(song[i]), duration(pace[i], speed));
+    digitalWrite(port(song[i]), HIGH);
+    delay(duration(pace[i], speed) + 10);
+    digitalWrite(port(song[i]), LOW);
   }
 }
