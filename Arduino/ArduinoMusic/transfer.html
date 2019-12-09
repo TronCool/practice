@@ -16,7 +16,7 @@
 
         textarea {
             width: 1000px;
-            height: 50px;
+            height: 100px;
         }
 
         button {
@@ -37,28 +37,43 @@
 </head>
 
 <body>
-    <div>音调： 低音5 输入 5., 中音5 输入 5，高音1 输入.1，分节符输入 |，音调间用逗号分隔</div>
+    <div>音调： 低音5 输入 5., 中音5 输入 5，高音1 输入.1，分节符输入 /，音调间用逗号或空格分隔</div>
     <div><input type="text" id="melody" name="melody"></div>
-    <div>节拍： 1拍音符 0，下加一线输入 1，下加两线输入 2，跟着延音点输入 .，跟着延音线就输入-，分节符输入 |，节拍间用逗号分隔</div>
+    <div>节拍： 1拍音符 0，下加一线输入 1，下加两线输入 2，跟着延音点输入 .，跟着延音线就输入-，分节符输入 /，节拍间用逗号或空格分隔</div>
     <div><input type="text" id="pace" name="pace"></div>
     <div><button onclick="transfer()">转换</button></div>
+    <div><textarea name="debug" id="debug"></textarea></div>
     <div><textarea name="result" id="result"></textarea></div>
+
+    <div><img src="//ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2619509633,1875120978&fm=26&gp=0.jpg" /></div>
 </body>
 <script>
     melodyMap={
-        ".1":"t", ".2":"u", ".3":"v", ".4":"w", ".5":"x", ".6":"y", ".7":"z", 
+        ".1":"a", ".2":"b", ".3":"c", ".4":"d", ".5":"e", ".6":"f", ".7":"g", 
         "1":"1", "2":"2", "3":"3", "4":"4", "5":"5", "6":"6", "7":"7", 
-        "1.":"a", "2.":"b", "3.":"c", "4.":"d", "5.":"e", "6.":"f", "7.":"g", 
+        "1.":"t", "2.":"u", "3.":"v", "4.":"w", "5.":"x", "6.":"y", "7.":"z", 
         " ":" ", "0":"0"
     }
     paceMap={
         "0":"1", "0-":"z", "0--":"y", "0---":"x", "0.":"a", "1.":"b", "2.":"c", "1":"2", "2":"3", "3":"4", " ":" "
     }
+    function preformat(s){
+        return s.replace(/[ ,]+/g,",")
+                .replace(/[\|\/|\\,]{2,}/g,"/")
+                .replace(/(\d)(?=\d)/g,"$1,")
+                .replace(/\//g,", ,")
+                .replace(/^[ ,]+|[ ,]+$/g,"")
+                .split(",");
+    }
     function transfer(){
+        debug.value = [
+            JSON.stringify(preformat(melody.value)),
+            JSON.stringify(preformat(pace.value))
+        ].join("\n");
         result.value = [
             "\"" + "120" + "\",",
-            "\"" + melody.value.replace(/ /g,"").replace(/\|/g,", ,").split(",").map(i=>melodyMap[i]).join("").trim(" ") + "\",",
-            "\"" + pace.value.replace(/ /g,"").replace(/\|/g,", ,").split(",").map(i=>paceMap[i]).join("").trim(" ") + "\","
+            "\"" + preformat(melody.value).map(i=>melodyMap[i]).join("") + "\",",
+            "\"" + preformat(pace.value).map(i=>paceMap[i]).join("") + "\","
         ].join("\n");
     }
 </script>

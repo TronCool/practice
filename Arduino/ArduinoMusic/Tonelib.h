@@ -2,7 +2,10 @@
 #define TONELIB_DEFINE
 
 int melody(char s) {  // 频率
-    if      (s == 'w') { return 349; }   // 低音4#
+    if      (s == 't') { return 262; }   // 低音1#
+    else if (s == 'u') { return 294; }   // 低音2#
+    else if (s == 'v') { return 330; }   // 低音3#
+    else if (s == 'w') { return 349; }   // 低音4#
     else if (s == 'x') { return 392; }   // 低音5#
     else if (s == 'y') { return 440; }   // 低音6#
     else if (s == 'z') { return 494; }   // 低音7#
@@ -16,6 +19,10 @@ int melody(char s) {  // 频率
     else if (s == 'a') { return 1046; }  // 高音1#
     else if (s == 'b') { return 1175; }  // 高音2#
     else if (s == 'c') { return 1318; }  // 高音3#
+    else if (s == 'd') { return 1397; }  // 高音4#
+    else if (s == 'e') { return 1568; }  // 高音5#
+    else if (s == 'f') { return 1760; }  // 高音6#
+    else if (s == 'g') { return 1976; }  // 高音7#
     else { return  0; }
 }
 
