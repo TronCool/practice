@@ -1,6 +1,6 @@
 #include "Tonelib.h"  //LED接线查看Tonelob.h文件的port函数
 
-int tonePin = A2;  //喇叭接一头接GND，另一头接tonePin
+int tonePin = 10;  //喇叭接一头接GND，另一头接tonePin
 int musicNum = 2;  //一共有2首曲子，arduino没有数组长度方法，判断曲子数量比较麻烦，所以hardcode写在这里
 String music[] = {  //每三行为一曲, 速度，音调，节拍
   "160",  //Jingle Bell
@@ -34,5 +34,4 @@ void play(int idx) {
     delay(duration(pace[i], speed) + 10);  //延时等待发音结束，加10ms为了断开连续两个相同的音符
     digitalWrite(port(song[i]), LOW);  //灭LED
   }
-  noTone(tonePin);  //停止Pin的发音，实际上声音已经停了，双重保护
 }
