@@ -1,6 +1,8 @@
 #include "Tonelib.h"  //LED接线查看Tonelob.h文件的port函数
 
-int tonePin = 10;  //喇叭接一头接GND，另一头接tonePin
+int tonePin = 9;  //喇叭接一头接GND，另一头接tonePin
+int ledPin[] = {2, 3, 4, 5, 6, 7, 8}; //亮灯Pin
+
 int musicNum = 2;  //一共有2首曲子，arduino没有数组长度方法，判断曲子数量比较麻烦，所以hardcode写在这里
 String music[] = {  //每三行为一曲, 速度，音调，节拍
   "160",  //Jingle Bell
@@ -14,6 +16,13 @@ String music[] = {  //每三行为一曲, 速度，音调，节拍
 
 void setup() {
   pinMode(tonePin, OUTPUT);
+  pinMode(ledPin[0], OUTPUT);
+  pinMode(ledPin[1], OUTPUT);
+  pinMode(ledPin[2], OUTPUT);
+  pinMode(ledPin[3], OUTPUT);
+  pinMode(ledPin[4], OUTPUT);
+  pinMode(ledPin[5], OUTPUT);
+  pinMode(ledPin[6], OUTPUT);
 }
 
 void loop() {
