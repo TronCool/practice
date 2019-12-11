@@ -5,34 +5,12 @@
     <meta charset="UTF-8">
     <title>ArduinoMusic 音乐转换工具</title>
     <style>
-        div {
-            margin: 10px 0;
-        }
-
-        input {
-            height: 20px;
-            width: 1000px;
-        }
-
-        textarea {
-            width: 1000px;
-            height: 100px;
-        }
-
-        button {
-            height: 20px;
-            width: 60px;
-            border: 1px solid #333;
-        }
-
-        input,
-        textarea,
-        button {
-
-            border: 1px solid #333;
-            border-radius: 5px;
-        }
-
+        div { margin: 10px 0; }
+        input { height: 20px; width: 1000px; }
+        textarea { width: 1000px; height: 100px; }
+        button { height: 20px; width: 60px; border: 1px solid #333; }
+        input, textarea, button { border: 1px solid #333; border-radius: 5px; }
+        img { position: fixed; right: 20px; top: 0; width: 400px; }
     </style>
 </head>
 
@@ -42,8 +20,9 @@
     <div>节拍： 1拍音符 0，下加一线输入 1，下加两线输入 2，跟着延音点输入 .，跟着延音线就输入-，分节符输入 /</div>
     <div><input type="text" id="pace" name="pace"></div>
     <div><button onclick="transfer()">转换</button></div>
-    <div><textarea name="debug" id="debug"></textarea></div>
+    <div style="display:none;"><textarea name="debug" id="debug"></textarea></div>
     <div><textarea name="result" id="result"></textarea></div>
+    <div><img src="ex.png" width=></div>
 </body>
 <script>
     melodyMap={
