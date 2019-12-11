@@ -10,7 +10,7 @@
 [点此进入转换工具](//troncool.github.io/practice/Arduino/ArduinoMusic/transfer.html)
 
 #### 接线方式
-1. 喇叭，接10和GND。10可以在程序里设置成其它Pin。
+1. 喇叭，接9和GND。9可以在程序里设置成其它Pin。
 2. LED, 低中高音1234567，对应2-8这7个LED。可以在Tonelib.h里的port方法中设置成其它Pin。
 
 ![接线图](figv3.png)
