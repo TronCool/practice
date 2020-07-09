@@ -1,8 +1,8 @@
 #include <Servo.h>
 
-int DuoJiPin = 8;//10;
-int SoundSendPin = 6;
-int SoundRecvPin = 7;
+int DuoJiPin = 8;
+int SoundSendPin = 7;
+int SoundRecvPin = 6;
 Servo myServo;
 void setup() {
   // put your setup code here, to run once:
