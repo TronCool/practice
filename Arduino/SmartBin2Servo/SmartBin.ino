@@ -26,7 +26,7 @@ void get_distance()
    int d = pulseIn(SoundRecvPin,HIGH)/58;
    Serial.print("distance = ");
    Serial.println(d);
-   if(d <= 30)
+   if(d <= 10)
    {
     duo1.write(69);
     duo2.write(73);
