@@ -1,33 +1,51 @@
 #include <Adafruit_NeoPixel.h>
 
-#define LEDS_NUM  16  //LED数量
-#define DATA_PIN  7   //DATA端口
-#define RED_PIN   11  //"红"按钮控制脚
-#define GREEN_PIN 12  //"绿"按钮控制脚
-#define BLUE_PIN  13  //"蓝"按钮控制脚
-#define PLUS_PIN  2   //"加"按钮控制脚
-#define MINUS_PIN 3   //"减"按钮控制脚
-#define SPEED     50  //LED切换颜色的速度（两个LED动作之间间隔毫秒）
+#define LEDS_NUM       16  //LED数量
+#define DATA_PIN       7   //DATA端口
+#define COLOR_FORWARD  11  //"颜色+"按钮控制脚
+#define COLOR_BACKWARD 12  //"颜色-"按钮控制脚
+#define SWITCH_ON_OFF  13  //"开关"按钮控制脚
+#define BRIGHT_PLUS    2   //"亮度+"按钮控制脚
+#define BRIGHT_MINUS   3   //"亮度-"按钮控制脚
+#define SPEED          40  //LED切换颜色的速度（两个LED动作之间间隔毫秒）
 
 //初始化一个LED串
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDS_NUM, DATA_PIN, NEO_GRB + NEO_KHZ800);
 
-//初始化颜色，动作，操作符
-int    red       = 128;
-int    green     = 128;
-int    blue      = 128;
-String action    = "";
-String operation = "plus";
-String eggStatus = ""; 
+//初始化颜色,动作,操作符
+String action     = "";
+String toggle     = "on"; //开关开着
+int    red        = 128;
+int    green      = 128;
+int    blue       = 128;
+int    bright     = 5;
+int    color      = 0;
+int    colorList[15][3] = {
+                            {256,256,256}, //白
+                            {256,0,0},     //红
+                            {256,64,0},    //棕
+                            {256,128,0},   //橙
+                            {256,256,0},   //黄
+                            {128,256,0},   //黄绿
+                            {64,256,0},    //青绿
+                            {0,256,0},     //绿
+                            {0,256,256},   //湖蓝
+                            {0,128,256},   //海蓝
+                            {0,64,256},    //藏青
+                            {0,0,256},     //藏青
+                            {64,0,256},    //深紫
+                            {128,0,256},   //紫
+                            {256,0,256}    //洋红
+                          };
 
 void setup() {
   Serial.begin(57600);
 
-  pinMode(RED_PIN,   INPUT_PULLUP);
-  pinMode(GREEN_PIN, INPUT_PULLUP);
-  pinMode(BLUE_PIN,  INPUT_PULLUP);
-  pinMode(PLUS_PIN,  INPUT_PULLUP);
-  pinMode(MINUS_PIN, INPUT_PULLUP);
+  pinMode(COLOR_FORWARD,  INPUT_PULLUP);
+  pinMode(COLOR_BACKWARD, INPUT_PULLUP);
+  pinMode(SWITCH_ON_OFF,  INPUT_PULLUP);
+  pinMode(BRIGHT_PLUS,    INPUT_PULLUP);
+  pinMode(BRIGHT_MINUS,   INPUT_PULLUP);
 
   strip.begin();
   strip.setBrightness(50);
@@ -36,21 +54,21 @@ void setup() {
 
 void loop() {
   checkAction(); //检查按钮
-  delay(100);
+  delay(SPEED);
 }
 
 //检查按键
 void checkAction() {
-  String cmd = !digitalRead(PLUS_PIN) && !digitalRead(MINUS_PIN) ? "show egg" :
-               !digitalRead(PLUS_PIN)  ? "set plus" :
-               !digitalRead(MINUS_PIN) ? "set minus" :
-               !digitalRead(RED_PIN)   ? operation + " red" :
-               !digitalRead(GREEN_PIN) ? operation + " green" :
-               !digitalRead(BLUE_PIN)  ? operation + " blue" :
-                                         "";
+  String cmd = !digitalRead(BRIGHT_PLUS) && !digitalRead(BRIGHT_MINUS) ? "show egg" :
+               !digitalRead(BRIGHT_PLUS)    ? "bright +" :
+               !digitalRead(BRIGHT_MINUS)   ? "bright -" :
+               !digitalRead(COLOR_FORWARD)  ? "color +" :
+               !digitalRead(COLOR_BACKWARD) ? "color -" :
+               !digitalRead(SWITCH_ON_OFF)  ? "toggle on/off" :
+                                              "";
   if (action != cmd) { //消除长按连发
     action = cmd;
-    if (action != "") { //按下执行动作，释放没反应
+    if (action != "") { //按下执行动作,释放没反应
       Serial.println("do action: " + action); //串口调试
       doAction();
     }
@@ -60,32 +78,27 @@ void checkAction() {
 void doAction(){
   //protect for nothing to do
   if (action == "") return;
-  if (action == "show egg")  doEgg();
-  if (action == "set plus")  operation = "plus";
-  if (action == "set minus") operation = "minus";
-  if (action == "plus red")    red   = doPlus(red);
-  if (action == "plus green")  green = doPlus(green);
-  if (action == "plus blue")   blue  = doPlus(blue);
-  if (action == "minus red")   red   = doMinus(red);
-  if (action == "minus green") green = doMinus(green);
-  if (action == "minus blue")  blue  = doMinus(blue);
+  if (action == "show egg")       doEgg();
+  if (action == "bright +")       bright = bright >= 10 ? 10 : bright + 1; //10级亮度
+  if (action == "bright -")       bright = bright <= 1  ? 1  : bright - 1; //10级亮度
+  if (action == "color +")        color  = color >= 14  ? 0   : color + 1; //0-14共15种颜色
+  if (action == "color -")        color  = color <= 0   ? 14  : color - 1; //0-14共15种颜色
+  if (action == "toggle on/off")  toggle = toggle == "on" ? "off" : "on";
 
-  eggStatus = "stop";
-  colorWipe();
+  setupColor();
 }
 
-//颜色值增加
-int doPlus(int i) {
-  return i >=191 ? 255 : i + 64;
-}
-
-//颜色值减少
-int doMinus(int i) {
-  return i <= 64 ? 0 : i - 64;
+//计算亮度
+int calcBright(int i) {
+  if (toggle=="off") return 0;
+  return int(i / 10 * bright);
 }
 
 //刷新LED串颜色
-void colorWipe() {
+void setupColor() {
+  red   = calcBright(colorList[color][0]);
+  green = calcBright(colorList[color][1]);
+  blue  = calcBright(colorList[color][2]);
   for(uint16_t i=0; i<LEDS_NUM; i++) {
     strip.setPixelColor(i, strip.Color(red, green, blue)); //设置单LED颜色
     strip.show();
@@ -94,17 +107,14 @@ void colorWipe() {
   Serial.println("Wipe color: red " + String(red) +" / green " + String(green) + " / blue " + String(blue)); //串口调试
 }
 
-//彩蛋，彩虹色循环
+//彩蛋, 彩虹色循环
 void doEgg() {
   uint16_t i, j;
-  eggStatus == "go";
-  for(j=0; j<256*5; j++) { //彩轮转5圈
-    for(i=0; i< LEDS_NUM; i++) {
+  for(j = 0; j < 256*5; j++) { //彩轮转5圈
+    for(i = 0; i < LEDS_NUM; i++) {
       strip.setPixelColor(i, Wheel(((i * 256 / LEDS_NUM) + j) & 255));
     }
     strip.show();
-    checkAction(); //彩蛋过程中检查有没有按钮
-    if (eggStatus == "stop") return; //有按钮就停止彩蛋
     delay(SPEED);
   }
 }
