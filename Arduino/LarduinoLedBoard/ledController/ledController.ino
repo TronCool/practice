@@ -15,9 +15,6 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDS_NUM, DATA_PIN, NEO_GRB + NEO_KH
 //初始化颜色,动作,操作符
 String action     = "";
 String toggle     = "on"; //开关开着
-int    red        = 128;
-int    green      = 128;
-int    blue       = 128;
 int    bright     = 5;
 int    color      = 0;
 int    colorList[15][3] = {
@@ -59,13 +56,13 @@ void loop() {
 
 //检查按键
 void checkAction() {
-  String cmd = !digitalRead(BRIGHT_PLUS) && !digitalRead(BRIGHT_MINUS) ? "show egg" :
-               !digitalRead(BRIGHT_PLUS)    ? "bright +" :
-               !digitalRead(BRIGHT_MINUS)   ? "bright -" :
-               !digitalRead(COLOR_FORWARD)  ? "color +" :
-               !digitalRead(COLOR_BACKWARD) ? "color -" :
-               !digitalRead(SWITCH_ON_OFF)  ? "toggle on/off" :
-                                              "";
+  String cmd = !digitalRead(BRIGHT_PLUS) && !digitalRead(BRIGHT_MINUS) ? "show egg" : //亮度 加 减 同时按下，激活彩蛋
+               !digitalRead(BRIGHT_PLUS)    ? "bright +" :      //亮度 加 按下
+               !digitalRead(BRIGHT_MINUS)   ? "bright -" :      //亮度 减 按下
+               !digitalRead(COLOR_FORWARD)  ? "color +" :       //颜色 加 按下
+               !digitalRead(COLOR_BACKWARD) ? "color -" :       //亮度 减 按下
+               !digitalRead(SWITCH_ON_OFF)  ? "toggle on/off" : //开关 加 按下
+                                              "";               //释放按钮
   if (action != cmd) { //消除长按连发
     action = cmd;
     if (action != "") { //按下执行动作,释放没反应
@@ -96,9 +93,9 @@ int calcBright(int i) {
 
 //刷新LED串颜色
 void setupColor() {
-  red   = calcBright(colorList[color][0]);
-  green = calcBright(colorList[color][1]);
-  blue  = calcBright(colorList[color][2]);
+  int red   = calcBright(colorList[color][0]);
+  int green = calcBright(colorList[color][1]);
+  int blue  = calcBright(colorList[color][2]);
   for(uint16_t i=0; i<LEDS_NUM; i++) {
     strip.setPixelColor(i, strip.Color(red, green, blue)); //设置单LED颜色
     strip.show();
@@ -107,7 +104,7 @@ void setupColor() {
   Serial.println("Wipe color: red " + String(red) +" / green " + String(green) + " / blue " + String(blue)); //串口调试
 }
 
-//彩蛋, 彩虹色循环
+//彩蛋, 彩虹色循环，大约1分钟
 void doEgg() {
   uint16_t i, j;
   for(j = 0; j < 256*5; j++) { //彩轮转5圈
