@@ -28,7 +28,7 @@ Servo servoTop;
 Servo servoBase;
 Thread myThread = Thread();
 int bAuto = 0;
-int autoCount = 10;//1-10  1快，10慢
+int autoCount = 1;//1-10  1快，10慢
 int intrruptCount = 0;
 int autoTimer = 0;
 void setup() {
@@ -172,8 +172,8 @@ void moveArm()
   accTop = (float)map(joyY,0,1023,mapValue,-mapValue)/scale;
   if(abs(accBase)<=0.5)accBase = 0;
   if(abs(accTop)<=0.5)accTop = 0;
-  if(abs(accBase)>=10)accBase = 0;
-  if(abs(accTop)>=10)accTop = 0;
+  if(abs(accBase)>=10)accBase = accBase>0?10:-10;
+  if(abs(accTop)>=10)accTop = accTop>0?10:-10;
   if(accBase == 0 && accTop == 0)return;
   
   angleBase += accBase;
@@ -199,9 +199,10 @@ void moveArm()
 
 void moveArmAuto()
 {
-  static int autoCount = 0;
-  autoCount++;
-  if(autoCount%2 == 0)
+  static int LedAutoTimer = 0;
+  static int LedCount = 2;
+  LedAutoTimer++;
+  if(LedAutoTimer%LedCount == 0)
     digitalWrite(9,HIGH);
   else
     digitalWrite(9,LOW);
@@ -225,6 +226,7 @@ void moveArmAuto()
   if(left<scale&&right<scale&&top<scale&&bottom<scale){
     servoBase.write(angleBase);
     servoTop.write(angleTop);
+    LedCount = 10;
     return;//没有光线的时候不动
   }
   accBase = (left-right)/scale;  
@@ -234,9 +236,10 @@ void moveArmAuto()
   {
     servoBase.write(angleBase);
     servoTop.write(angleTop);
+    LedCount = 10;
     return;//误差较小的时候不动
   }
-
+  LedCount = 2;
   if(accBase>0)accBase = 1;
   else if(accBase<0)accBase = -1;
   if(accTop>0)accTop = 1;
@@ -317,7 +320,7 @@ void getFeedback()
 
   angleBaseFk = sumBase /10;
   angleTopFk = sumTop/10;
-
+ 
 // 5伏下的映射
 //  angleBaseFk = map(angleBaseFk,90,660,0,180);
 //  angleTopFk = map(angleTopFk,116,600,0,180);
